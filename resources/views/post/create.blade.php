@@ -6,11 +6,22 @@
     </x-slot>
     
     <div class="max-w-7xl mx-auto px-6">
+        {{--
+            セッションに'message'というキーで保存されたメッセージがある場合、
+            そのメッセージを表示します。
+        --}}
         @if (session('message'))
             <div class="text-red-600 font-bold">
                 {{ session('message') }}
             </div>
         @endif
+        {{--
+            以下のフォームのを送信（リクエスト）すると、action属性で指定された
+            URLまたはルート名に対応するルートが呼び出されます。
+            ここでは、post.storeという名前のルートが呼び出されます。
+            また、method属性でPOSTメソッドが指定されているため、
+            post.storeルートのメソッドはPOSTである必要があります。
+        --}}
         <form method="post" action="{{route('post.store')}}">
             @csrf
             <div class="mt-8">
