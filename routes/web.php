@@ -31,4 +31,8 @@ Route::middleware('auth')->group(function () {
 // navigation.blade.phpのuserの名前を表示する部分でエラーが発生してしまいます。
 // これを防ぐために、上記のミドルウェア定義領域内にルートを定義しました。
 
+
+// 
+Route::post('post', [PostController::class, 'store'])->name('post.store');
+
 require __DIR__.'/auth.php';

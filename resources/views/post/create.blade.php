@@ -6,7 +6,13 @@
     </x-slot>
     
     <div class="max-w-7xl mx-auto px-6">
-        <form>
+        @if (session('message'))
+            <div class="text-red-600 font-bold">
+                {{ session('message') }}
+            </div>
+        @endif
+        <form method="post" action="{{route('post.store')}}">
+            @csrf
             <div class="mt-8">
                 <div class="w-full flex flex-col">
                     <label for="title" class="font-semibold mt-4">件名</label>
