@@ -20,7 +20,12 @@
             </p>
             <div class="p-4 text-sm font-semibold">
                 <p>
-                    {{-- データをpostした日時と、リレーションしたuserモデルを介してユーザー名を取得し表示 --}}
+                    {{--以下の処理
+                        1.Postモデルを介して投稿した日時(created_atカラムの値)を取得
+                        2.Postモデルのuserメソッドでリレーションしたuserモデル参照し
+                        3.EloquentORMでuser_idに一致する主キーのユーザー名を取得
+                        4.取得した値を表示
+                    --}}
                     {{$post->created_at}} / {{$post->user->name}}
                 </p>
             </div>

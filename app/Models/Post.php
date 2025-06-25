@@ -22,6 +22,7 @@ class Post extends Model
     // guardedは、fillableの逆の意味を持ちます。
     ];
 
+    // Userモデルを介してusersテーブルの唯一のレコードとリレーション
     public function user(){
         return $this -> belongsTo(User::class);
     }
