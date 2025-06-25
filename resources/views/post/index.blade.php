@@ -20,8 +20,8 @@
             </p>
             <div class="p-4 text-sm font-semibold">
                 <p>
-                    {{-- データをpostした日時を取得し表示 --}}
-                    {{$post->created_at}}
+                    {{-- データをpostした日時と、リレーションしたuserモデルを介してユーザー名を取得し表示 --}}
+                    {{$post->created_at}} / {{$post->user->name}}
                 </p>
             </div>
         </div>

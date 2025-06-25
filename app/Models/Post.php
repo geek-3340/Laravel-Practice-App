@@ -21,4 +21,8 @@ class Post extends Model
     // ここに設定されたカラム以外を一括保存・削除の対象とします。
     // guardedは、fillableの逆の意味を持ちます。
     ];
+
+    public function user(){
+        return $this -> belongsTo(User::class);
+    }
 }
