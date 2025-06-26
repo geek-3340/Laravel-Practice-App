@@ -35,6 +35,18 @@ Route::middleware('auth')->group(function () {
         // navigation.blade.phpのuserの名前を表示する部分でエラーが発生してしまいます。
         // これを防ぐために、上記のミドルウェア定義領域内にルートを定義しました。
     Route::get('/post/create', [PostController::class, 'create']);
+
+    // 【動作フロー】以下のrouteについて
+    // ブラウザからwebサーバーを介して、/postがリクエストされたときに
+    // APサーバーで動作するこのrouteが呼び出されます。
+    // このrouteは呼び出されたらPostControllerのindexメソッドを呼び出します
+    // PostControllerのindexメソッドでは以下の処理を行います。
+        // Postモデルを介して、postsテーブルのデータを全て取得し$posts変数に格納します。
+        // compact関数で$postsをindex.blade.phpへ受け渡し参照できるようにします。
+        // index.blade.phpを返す処理を行います。
+    // 返り値のindex.blade.phpは、このrouteのgetメソッドでURL（/post）に紐づけられ
+    // webサーバーに戻され、ブラウザに表示されます。
+Route::get('post',[PostController::class,'index']);
 });
 
 // 【動作フロー】以下のrouteについて
@@ -54,17 +66,5 @@ Route::middleware('auth')->group(function () {
         // そのメッセージを表示する処理が行われます。
         // メッセージを反映したcreate.blade.phpがwebサーバーに戻され、ブラウザに表示されます。
 Route::post('post', [PostController::class, 'store'])->name('post.store');
-
-// 【動作フロー】以下のrouteについて
-    // ブラウザからwebサーバーを介して、/postがリクエストされたときに
-    // APサーバーで動作するこのrouteが呼び出されます。
-    // このrouteは呼び出されたらPostControllerのindexメソッドを呼び出します
-    // PostControllerのindexメソッドでは以下の処理を行います。
-        // Postモデルを介して、postsテーブルのデータを全て取得し$posts変数に格納します。
-        // compact関数で$postsをindex.blade.phpへ受け渡し参照できるようにします。
-        // index.blade.phpを返す処理を行います。
-    // 返り値のindex.blade.phpは、このrouteのgetメソッドでURL（/post）に紐づけられ
-    // webサーバーに戻され、ブラウザに表示されます。
-Route::get('post',[PostController::class,'index']);
 
 require __DIR__.'/auth.php';

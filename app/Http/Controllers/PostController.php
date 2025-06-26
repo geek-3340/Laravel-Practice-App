@@ -54,10 +54,48 @@ class PostController extends Controller
 
     // indexメソッド
     public function index(){
-        // Postモデルを介してpostsテーブルのデータを取得し変数に格納。
+        // Postモデルを介してpostsテーブルの全データを取得し変数に格納。
         $posts = Post::all();
+
+        // 【条件付きデータ取得】
+            // 条件に合ったデータ取得
+                // モデル名::where('条件をつけるカラム名' , 条件) -> get();
+                // 以下ではuser_idカラムにログイン中のidという条件を設けてデータを取得している。
+        // $terms = Post::where('user_id',auth()->id())->get();
+
+            // 条件に合わないデータ取得
+                // モデル名::where('条件をつけるカラム名' , '!=' , 条件) -> get();
+                // 以下ではuser_idカラムにログイン中のid以外という条件を設けてデータを取得している。
+        // $terms = Post::where('user_id','!=',auth()->id())->get();
+
+            // 日付条件に合ったデータ取得(年：Year 月：Month 日にち：Day 時間：Time 等も可能)
+                // モデル名::whereDate('条件をつけるカラム名' , '比較演算子' , 条件) -> get();
+        // $terms = Post::whereDate('created_at','>','2025-06-25')->get();
+
+            // ２つの値の間のデータ取得
+                // モデル名::whereBetween('条件をつけるカラム名' , [値1 , 値2]) -> get();
+        // $terms = Post::whereBetween('user_id',[1,2])->get();
+
+            // 指定値のいずれかを含むデータ取得
+                // モデル名::whereIn('条件をつけるカラム名' , [値1 , 値2]) -> get();
+        // $terms = Post::whereIn('user_id',[1,3])->get();
+
+            // 条件の組み合わせ
+                // Post::条件指定 -> 条件指定 -> get();
+        // $terms = Post::whereIn('user_id',[1,3])->whereTime('created_at','>','22:00')->get();
+
+        // 【Eagerロード：N＋1問題の解決方法】
+            // viewファイルでリレーションしたusersテーブルを参照するたびにアクセスが発生する問題（N＋1問題）の解決方法
+            // リレーションしたUserモデルを介して予めusersテーブルのデータをpostsに加えて取得しておくことができます。
+                // postsテーブルとusersテーブルの全てのデータを取得し、$posts変数に格納します。
+                // 以下のコードだけで$posts = Post::all();で取得できるデータに加えてusersテーブルのデータも取得します。
+        $posts = Post::with('user')->get();
+
+                // 上記の条件でpostsテーブルとusersテーブルの全てのデータを対象に、一致するものを取得します。
+                // 条件の組み合わせの応用で with('リレーション名')をget()の手前に加えるだけです。
+        $terms = Post::whereIn('user_id',[1,3])->whereTime('created_at','>','22:00')->with('user')->get();
+
         // compact関数でviewファイルから変数を参照できるようにして、post/index.blade.phpを返す。
-        return view('post.index',compact('posts'));
+        return view('post.index',compact('posts','terms'));
     }
 }
-
