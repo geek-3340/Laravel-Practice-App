@@ -21,22 +21,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // 【動作フロー】以下のrouteについて
-        // ブラウザからwebサーバーを介して、/post/createがリクエストされたときに
-        // APサーバーで動作するこのrouteが呼び出されます。
-        // このrouteは呼び出されたらPostControllerのcreateメソッドを呼び出します
-        // PostControllerのcreateメソッドでは、create.blade.phpを返す処理を行います。
-        // 返り値のcreate.blade.phpは、このrouteのgetメソッドでURL（/post/create）に紐づけられ
-        // webサーバーに戻され、ブラウザに表示されます。
-
-    // 【補足】
-        // create.blade.phpはapp.blade.phpをテンプレートとして使用しており、その中でinclude
-        // しているnavigation.blade.phpにはuserの名前を表示するためのコードが含まれています。
-        // そのため、ユーザーがログインしていないと、userの値がnullになり、
-        // navigation.blade.phpのuserの名前を表示する部分でエラーが発生してしまいます。
-        // これを防ぐために、上記のミドルウェア定義領域内にルートを定義しました。
-    Route::get('/post/create', [PostController::class, 'create']);
-
-    // 【動作フロー】以下のrouteについて
     // ブラウザからwebサーバーを介して、/postがリクエストされたときに
     // APサーバーで動作するこのrouteが呼び出されます。
     // このrouteは呼び出されたらPostControllerのindexメソッドを呼び出します
@@ -46,8 +30,35 @@ Route::middleware('auth')->group(function () {
         // index.blade.phpを返す処理を行います。
     // 返り値のindex.blade.phpは、このrouteのgetメソッドでURL（/post）に紐づけられ
     // webサーバーに戻され、ブラウザに表示されます。
-Route::get('post',[PostController::class,'index']);
+    Route::get('post',[PostController::class,'index']);
 });
+
+
+// 【ミドルウェアの設定】
+// 複数のルートに同じミドルウェアを適用したい場合
+// 構文
+    // Route::middleware('ミドルウェア名','ミドルウェア名'…)->group(function(){
+    //     Route~
+    //     Route^
+    // });
+Route::middleware('auth','admin')->group(function () {
+
+// 【動作フロー】以下のrouteについて
+    // ブラウザからwebサーバーを介して、/post/createがリクエストされたときに
+    // APサーバーで動作するこのrouteが呼び出されます。
+    // このrouteは呼び出されたらPostControllerのcreateメソッドを呼び出します
+    // PostControllerのcreateメソッドでは、create.blade.phpを返す処理を行います。
+    // 返り値のcreate.blade.phpは、このrouteのgetメソッドでURL（/post/create）に紐づけられ
+    // webサーバーに戻され、ブラウザに表示されます。
+// 【補足】
+    // create.blade.phpはapp.blade.phpをテンプレートとして使用しており、その中でinclude
+    // しているnavigation.blade.phpにはuserの名前を表示するためのコードが含まれています。
+    // そのため、ユーザーがログインしていないと、userの値がnullになり、
+    // navigation.blade.phpのuserの名前を表示する部分でエラーが発生してしまいます。
+    // これを防ぐために、上記のミドルウェア定義領域内にルートを定義しました。
+Route::get('/post/create', [PostController::class, 'create']);
+// 特定のルートにのみミドルウェアを適用する場合は以下のような記述でも良い
+// Route::get('/post/create', [PostController::class, 'create'])->middleware('auth','admin');
 
 // 【動作フロー】以下のrouteについて
         // create.blade.php内のフォームにてデータが送信された際、ブラウザからwebサーバーを介して
@@ -59,12 +70,13 @@ Route::get('post',[PostController::class,'index']);
             // 1. リクエストからtitleとbodyを取得し、Postモデルのcreateメソッドを使用して新しいレコードを作成
             //    同時にPostモデルを介してレコードをDBサーバーに保存します。
             // 2. 作成したレコードを$post変数に格納します。
-                // 保存したレコード（モデルインスタンス）を$post変数に格納することは、後の処理で使用するためのものです。
+            //    保存したレコード（モデルインスタンス）を$post変数に格納することは、後の処理で使用するためのものです。
             // 3. 保存が完了したら、元のページにリダイレクトします。
             // 4. リダイレクト時に、'message'というセッション変数に'保存しました'というメッセージを設定します。
         // リダイレクトされたcreate.blade.phpにてセッション変数' message'が存在する場合、
         // そのメッセージを表示する処理が行われます。
         // メッセージを反映したcreate.blade.phpがwebサーバーに戻され、ブラウザに表示されます。
 Route::post('post', [PostController::class, 'store'])->name('post.store');
+}); 
 
 require __DIR__.'/auth.php';
