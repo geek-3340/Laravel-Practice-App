@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Gateを使ったアクセス制限
-
+        // middlewareと同様の制限処理が可能
         // 【構文】
             // Gate::define('Gate名',function(モデル名 メソッド変数){
             //     if(条件){

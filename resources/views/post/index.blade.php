@@ -11,7 +11,9 @@
         <div class="mt-4 p-8 bg-green-300 w-full rounded-2xl">
             <h1 class="p-4 text-lg font-semibold">
                 {{-- titleを取得し表示 --}}
-                {{$post->title}}
+                <a href="{{route('post.show',$post)}}">
+                    {{$post->title}}
+                </a>
             </h1>
             <hr class="w-full">
             <p class="mt-4 p-4">
@@ -39,7 +41,9 @@
         <div class="mt-4 p-8 bg-blue-300 w-full rounded-2xl">
             <h1 class="p-4 text-lg font-semibold">
                 {{-- titleを取得し表示 --}}
-                {{$term->title}}
+                <a href="{{route('post.show',$term)}}">
+                    {{$term->title}}
+                </a>
             </h1>
             <hr class="w-full">
             <p class="mt-4 p-4">

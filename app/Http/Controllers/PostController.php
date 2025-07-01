@@ -98,4 +98,14 @@ class PostController extends Controller
         // compact関数でviewファイルから変数を参照できるようにして、post/index.blade.phpを返す。
         return view('post.index',compact('posts','terms'));
     }
+
+    // showメソッド
+    public function show (Post $post) {
+        return view('post.show',compact('post'));
+    }
+
+    // public function show ($id){
+    //     $post=Post::find($id);
+    //     return view('post.show',compact('post'));
+    // }
 }
