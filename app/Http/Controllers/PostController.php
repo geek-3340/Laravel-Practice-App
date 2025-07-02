@@ -100,12 +100,44 @@ class PostController extends Controller
     }
 
     // showメソッド
+        // メソッドの第一引数にmodel名、第二引数に変数とすることにより、ルートモデルバインディング（または依存注入）
+        // でリンクが押されたpostのid元にPostモデルを介してインスタンス生成し変数postに格納。
+        // compact関数でviewファイルから変数を参照できるようにして、post/show.blade.phpを返す。
     public function show (Post $post) {
         return view('post.show',compact('post'));
     }
-
+    // 引数をidの数字情報として受け取った場合は、idを元に手動でデータ取得、変数に格納します。
     // public function show ($id){
     //     $post=Post::find($id);
     //     return view('post.show',compact('post'));
     // }
+
+    // editメソッド
+    public function edit (Post $post){
+        return view('post.edit',compact('post'));
+    }
+
+    // updateメソッド
+    public function update(Request $request,Post $post){
+        // バリデーション機能実装
+            // リクエストデータからtitleとbodyを取得し、同時にvalidateメソッドを用いて各リクエストデータの
+            // 入力条件を設定して$validate変数に格納します。
+        $validated = $request->validate([
+            'title'=> 'required|max:20',
+            'body'=> 'required|max:400',
+        ]);
+
+        // リレーション機能
+            // 更新したユーザーのidをusersテーブルから取得し、postsテーブルのuser_idカラムに渡す値として
+            // $validated変数に追加格納します。
+        $validated['user_id'] = auth()->id();
+
+        // 
+        $post->update($validated);
+
+        // 更新が完了したら、元のページにリダイレクトします
+        // リダイレクト時に、'message'というセッション変数に
+        // '保存しました'というメッセージを設定します。
+        return back()->with('message', '更新しました');
+    }
 }

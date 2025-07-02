@@ -10,8 +10,15 @@
         @foreach ($posts as $post)
         <div class="mt-4 p-8 bg-green-300 w-full rounded-2xl">
             <h1 class="p-4 text-lg font-semibold">
-                {{-- titleを取得し表示 --}}
+                {{--
+                    リンクのURLを生成するためのrouteを呼び出し、パラメーターの
+                    引数としてPostモデルを介して取得したデータのidを渡す（routes/web.phpへ）
+                        ※$postはレコードを格納しているが、Laravelではヘルパー関数route()
+                        で呼び出すとURL生成のために内部的に[$post->getRouteKey()]となり
+                        idが返される
+                --}}
                 <a href="{{route('post.show',$post)}}">
+                    {{-- titleを取得し表示 --}}
                     {{$post->title}}
                 </a>
             </h1>
@@ -40,8 +47,12 @@
         @foreach ($terms as $term)
         <div class="mt-4 p-8 bg-blue-300 w-full rounded-2xl">
             <h1 class="p-4 text-lg font-semibold">
-                {{-- titleを取得し表示 --}}
+                {{--
+                    リンクのURLを生成するためのrouteを呼び出し、パラメーターの
+                    引数にPostモデルを介して取得したデータを渡す（routes/web.phpへ）
+                --}}
                 <a href="{{route('post.show',$term)}}">
+                    {{-- titleを取得し表示 --}}
                     {{$term->title}}
                 </a>
             </h1>

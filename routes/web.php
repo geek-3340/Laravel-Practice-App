@@ -79,7 +79,21 @@ Route::get('/post/create', [PostController::class, 'create']);
 Route::post('post', [PostController::class, 'store'])->name('post.store');
 }); 
 
-// 
+// // 【動作フロー】以下のrouteについて
+        // index.blade.php内のリンクがクリックされた際、ブラウザからwebサーバーを介して
+        // hrefで指定されたルート名(post.show,$post)がURL（post/show/リンクのPostインスタンスid）に変換されてリクエストされ
+        // APサーバーで動作するこのrouteが呼び出されます。
+        // このrouteは呼び出されたらPostControllerのshowメソッドを呼び出します
+        // PostControllerのshowメソッドでは、以下の処理を行います。
+            // 1. リンクが押されたpostを元にPostモデルを介してインスタンス生成し変数postに格納。
+            // 2. compact関数でviewファイルから変数を参照できるようにして、post/show.blade.phpを返す。
+        // show.blade.phpがwebサーバーに戻され、ブラウザに表示されます。
 Route::get('post/show/{post}',[PostController::class,'show'])->name('post.show');
+
+// 
+Route::get('post/{post}/edit',[PostController::class,'edit'])->name('post.edit');
+
+// 
+Route::patch('post/{post}',[PostController::class,'update'])->name('post.update');
 
 require __DIR__.'/auth.php';
