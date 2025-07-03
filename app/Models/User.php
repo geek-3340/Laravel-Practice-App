@@ -46,7 +46,6 @@ class User extends Authenticatable
         ];
     }
 
-    // Postモデルを介してpostsテーブルの複数のレコードとリレーション
     public function posts(){
         return $this -> hasMany(Post::class);
     }

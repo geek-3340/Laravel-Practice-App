@@ -15,14 +15,9 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // この領域にミドルウェアを設定
-
-        // ログイン中のユーザーのroleがadminであればリクエストを実行する
         if(auth()->user()->role == 'admin'){
             return $next($request);
         }
-
-        // 上記の条件に合わない場合、dashboardルートにリダイレクトする
         return redirect()->route('dashboard');
     }
 }

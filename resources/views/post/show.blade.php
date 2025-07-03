@@ -12,7 +12,6 @@
                     {{$post->title}}
                 </h1>
                 <div class="text-right">
-                    {{-- nameがpost.editのrouteを呼び出し、引数で現在のpostデータのidを渡す --}}
                     <a href="{{route('post.edit',$post)}}">
                         <x-primary-button>
                             編集
