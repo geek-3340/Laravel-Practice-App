@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
         // index.blade.phpを返す処理を行います。
     // 返り値のindex.blade.phpは、このrouteのgetメソッドでURL（/post）に紐づけられ
     // webサーバーに戻され、ブラウザに表示されます。
-    Route::get('post',[PostController::class,'index']);
+    Route::get('post',[PostController::class,'index'])->name('post.index');
 });
 
 
@@ -90,10 +90,13 @@ Route::post('post', [PostController::class, 'store'])->name('post.store');
         // show.blade.phpがwebサーバーに戻され、ブラウザに表示されます。
 Route::get('post/show/{post}',[PostController::class,'show'])->name('post.show');
 
-// 
+// ブラウザからwebサーバーを介してリクエストと引数（id）を受け取り、PostControllerのeditメソッドを呼び出す。
 Route::get('post/{post}/edit',[PostController::class,'edit'])->name('post.edit');
 
-// 
+// ブラウザからwebサーバーを介してリクエストと引数（id）を受け取り、PostControllerのupdateメソッドを呼び出す。
 Route::patch('post/{post}',[PostController::class,'update'])->name('post.update');
+
+// 
+Route::delete('post/{post}',[PostController::class,'destroy'])->name('post.destroy');
 
 require __DIR__.'/auth.php';

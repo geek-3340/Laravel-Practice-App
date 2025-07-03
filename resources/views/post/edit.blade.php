@@ -17,10 +17,10 @@
         @endif
         {{--
             以下のフォームを送信（リクエスト）すると、action属性で指定された
-            URLまたはルート名に対応するルートが呼び出されます。
-            ここでは、post.storeという名前のルートが呼び出されます。
-            また、method属性でPOSTメソッドが指定されているため、
-            post.storeルートのメソッドはPOSTである必要があります。
+            post.updateというルート名に対応するルートを呼び出す
+            引数にこのpostのデータのidを渡す
+            また、method属性にpatchメソッドが指定されているため、
+            post.updateルートのメソッドはpatchである必要がある
         --}}
         <form method="post" action="{{route('post.update',$post)}}">
             @csrf
@@ -34,7 +34,7 @@
                             $error変数が返されます。
                             以下はinput-errorコンポーネントを用いて、エラーの場合titleのエラー内容を抽出し表示します。
 
-                            また、old関数を用いてinputに入力したバリデーションエラー前の値を残します。
+                            また、更新時のold関数は第一引数にname属性の値、第二引数にデフォルトの値とする
                     --}}
                     <x-input-error :messages="$errors->get('title')" class="mt-2" />
                     <input type="text" name="title" class="w-auto py-2 border border-gray-300 rounded-md" id="title"

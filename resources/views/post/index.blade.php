@@ -6,6 +6,11 @@
     </x-slot>
     
     <div class="mx-auto px-6">
+        @if (session('message'))
+            <div class="text-red-600 font-bold">
+                {{ session('message') }}
+            </div>
+        @endif
         {{-- postsテーブルの各データごとにforeachで処理を回す --}}
         @foreach ($posts as $post)
         <div class="mt-4 p-8 bg-green-300 w-full rounded-2xl">

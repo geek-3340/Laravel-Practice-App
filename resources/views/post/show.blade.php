@@ -18,6 +18,13 @@
                             編集
                         </x-primary-button>
                     </a>
+                    <form method="post" action="{{route('post.destroy',$post)}}" class="flex-2">
+                        @csrf
+                        @method('delete')
+                        <x-primary-button class="bg-red-700 ml-2">
+                            削除
+                        </x-primary-button>
+                    </form>
                 </div>
                 <hr class="w-full">
                 <p class="mt-4 whitespace-pre-line">

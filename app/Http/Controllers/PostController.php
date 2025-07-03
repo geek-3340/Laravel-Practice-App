@@ -113,11 +113,14 @@ class PostController extends Controller
     // }
 
     // editメソッド
+    // ルートモデルバインディングで呼び出し元のpostのidを元にPostモデルを介してインスタンス生成し変数postに格納
+    // compact関数でviewファイルから変数を参照できるようにして、post/edit.blade.phpを返す。
     public function edit (Post $post){
         return view('post.edit',compact('post'));
     }
 
     // updateメソッド
+    // ルートモデルバインディングで呼び出し元のpostのidを元にPostモデルを介してインスタンス生成し変数postに格納
     public function update(Request $request,Post $post){
         // バリデーション機能実装
             // リクエストデータからtitleとbodyを取得し、同時にvalidateメソッドを用いて各リクエストデータの
@@ -132,12 +135,19 @@ class PostController extends Controller
             // $validated変数に追加格納します。
         $validated['user_id'] = auth()->id();
 
-        // 
+        // updateメソッドによりpostsテーブルのデータをformのリクエストデータで更新する
         $post->update($validated);
 
         // 更新が完了したら、元のページにリダイレクトします
         // リダイレクト時に、'message'というセッション変数に
         // '保存しました'というメッセージを設定します。
         return back()->with('message', '更新しました');
+    }
+
+    // 
+    public function destroy(Request $request,Post $post){
+        $post->delete();
+        $request->session()->flash('message','削除しました');
+        return redirect('post');
     }
 }
