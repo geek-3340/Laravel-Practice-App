@@ -2,16 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function create(){
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // $posts = Post::with('user')->get();
+        $posts = Post::with('user')->paginate(10);
+        $terms = Post::whereIn('user_id',[1,3])->whereTime('created_at','>','22:00')->with('user')->get();
+        return view('post.index',compact('posts','terms'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
         return view('post.create');
     }
 
-    public function store(Request $request){
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'title'=> 'required|max:20',
             'body'=> 'required|max:400',
@@ -21,22 +40,27 @@ class PostController extends Controller
         return back()->with('message', '保存しました');
     }
 
-    public function index(){
-        $posts = Post::all();
-        $posts = Post::with('user')->get();
-        $terms = Post::whereIn('user_id',[1,3])->whereTime('created_at','>','22:00')->with('user')->get();
-        return view('post.index',compact('posts','terms'));
-    }
-
-    public function show (Post $post) {
+    /**
+     * Display the specified resource.
+     */
+    public function show(Post $post)
+    {
         return view('post.show',compact('post'));
     }
-    
-    public function edit (Post $post){
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Post $post)
+    {
         return view('post.edit',compact('post'));
     }
 
-    public function update(Request $request,Post $post){
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Post $post)
+    {
         $validated = $request->validate([
             'title'=> 'required|max:20',
             'body'=> 'required|max:400',
@@ -46,7 +70,11 @@ class PostController extends Controller
         return back()->with('message', '更新しました');
     }
 
-    public function destroy(Request $request,Post $post){
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request,Post $post)
+    {
         $post->delete();
         $request->session()->flash('message','削除しました');
         return redirect('post');
