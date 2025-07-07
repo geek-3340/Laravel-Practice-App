@@ -4,7 +4,27 @@
             一覧表示
         </h2>
     </x-slot>
-    
+
+    {{-- 投稿日検索（カレンダーUI） --}}
+    <div class="flex justify-between items-center pt-4 px-6">
+        <form method="GET" action="{{ route('post.index') }}">
+            <input type="text" id="datePicker" name="date" placeholder="日付を選択" value="{{ request('date') }}"
+            class="py-2 border border-gray-300 rounded-md">
+            <x-primary-button type="submit">表 示</x-primary-button>
+        </form>
+        <script>
+            flatpickr("#datePicker", {
+                dateFormat: "Y-m-d",
+                locale: "ja"
+            });
+        </script>
+        @if (request('date'))
+        <p class="text-gray-500">表示中: {{ request('date') }} の記事</p>
+        @else
+        <p class="text-gray-500">表示中: 全ての記事</p>
+        @endif
+    </div>
+
     <div class="mx-auto px-6">
         {{-- @if (session('message'))
             <div class="text-red-600 font-bold">
@@ -12,8 +32,10 @@
             </div>
         @endif --}}
         <x-message :message="session('message')" />
+
         @foreach ($posts as $post)
-        <div class="mt-4 p-8 bg-green-300 w-full rounded-2xl">
+        <div class="post opacity-0 translate-y-8 transition-all duration-700 ease-out
+        mt-4 p-8 bg-white w-full rounded-2xl">
             <h1 class="p-4 text-lg font-semibold">
                 <a href="{{route('post.show',$post)}}">
                     {{$post->title}}
@@ -30,11 +52,12 @@
             </div>
         </div>
         @endforeach
-        <div class="mb-4">
+        <div class="pt-4">
             {{$posts->links()}}
         </div>
     </div>
-    <div class="mx-auto px-6">
+
+    {{-- <div class="mx-auto px-6">
         <h1 class="mt-12 text-xl font-bold">条件付き表示</h1>
         @foreach ($terms as $term)
         <div class="mt-4 p-8 bg-blue-300 w-full rounded-2xl">
@@ -54,5 +77,5 @@
             </div>
         </div>
         @endforeach
-    </div>
+    </div> --}}
 </x-app-layout>

@@ -8,22 +8,24 @@
     <div class="max-w-7xl mx-auto px-6">
         <div class="bg-white w-full rounded-2xl">
             <div class="mt-4 p-4">
-                <h1 class="text-lg font-semibold">
-                    {{$post->title}}
-                </h1>
-                <div class="text-right">
-                    <a href="{{route('post.edit',$post)}}">
-                        <x-primary-button>
-                            編集
-                        </x-primary-button>
-                    </a>
-                    <form method="post" action="{{route('post.destroy',$post)}}" class="flex-2">
-                        @csrf
-                        @method('delete')
-                        <x-primary-button class="bg-red-700 ml-2">
-                            削除
-                        </x-primary-button>
-                    </form>
+                <div class="flex justify-between">
+                    <h1 class="text-lg font-semibold">
+                        {{$post->title}}
+                    </h1>
+                    <div class="flex mb-3">
+                        <a href="{{route('post.edit',$post)}}">
+                            <x-primary-button>
+                                編集
+                            </x-primary-button>
+                        </a>
+                        <form method="post" action="{{route('post.destroy',$post)}}" class="flex-2">
+                            @csrf
+                            @method('delete')
+                            <x-primary-button class="bg-red-700 ml-2">
+                                削除
+                            </x-primary-button>
+                        </form>
+                    </div>
                 </div>
                 <hr class="w-full">
                 <p class="mt-4 whitespace-pre-line">

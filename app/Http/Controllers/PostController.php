@@ -10,12 +10,22 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // $posts = Post::with('user')->get();
-        $posts = Post::with('user')->paginate(10);
-        $terms = Post::whereIn('user_id',[1,3])->whereTime('created_at','>','22:00')->with('user')->get();
-        return view('post.index',compact('posts','terms'));
+        // $posts = Post::with('user')->paginate(10);
+        // $terms = Post::whereIn('user_id',[1,3])->whereTime('created_at','>','22:00')->with('user')->get();
+        // return view('post.index',compact('posts','terms'));
+
+        // 日付フィルター用のロジック
+        $query = Post::query()->with('user');
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+        $posts = $query->latest()->paginate(10);
+
+        // postデータをindexに渡して表示
+        return view('post.index', compact('posts'));
     }
 
     /**

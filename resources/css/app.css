@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* resources/css/app.css に追記 */
+.visible {
+    @apply opacity-100 translate-y-0;
+}
