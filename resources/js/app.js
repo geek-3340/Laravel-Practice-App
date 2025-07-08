@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("visible");
-                observer.unobserve(entry.target); // 一度表示したら監視を終了
+                observer.unobserve(entry.target); // 表示後は監視しない
             }
         });
     }, {
