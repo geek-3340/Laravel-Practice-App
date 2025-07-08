@@ -12,7 +12,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     
+    // 有効にしたいミドルウェアは以下の設定内に記載する
     ->withMiddleware(function (Middleware $middleware): void {
+        
+        // 【構文】
+        // $middleware->alias([
+        //     'エイリアス名'=>ミドルウェア名::class,
+        //     'エイリアス名'=>ミドルウェア名::class,
+        //     'エイリアス名'=>ミドルウェア名::class,
+        //     ※使用するだけ追加
+        // ]);
+
+        // RoleMiddlewareを有効にして呼び出し時のエイリアス（admin）を設定する
         $middleware->alias([
             'admin'=>RoleMiddleware::class
         ]);
