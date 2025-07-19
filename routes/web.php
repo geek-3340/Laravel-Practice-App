@@ -4,12 +4,14 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
+// 
 Route::resource('post',PostController::class)->middleware('auth');
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// ログイン後、index.blade.phpに遷移したい為、コメントアウト
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
