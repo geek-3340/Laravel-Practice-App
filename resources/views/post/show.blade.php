@@ -13,12 +13,15 @@
                         {{$post->title}}
                     </h1>
                     <div class="flex mb-3">
+                        @can('update', $post) {{--ユーザーが一致すれば表示--}}
                         {{-- nameがpost.editのrouteを呼び出し、引数で現在のpostデータのidを渡す --}}
                         <a href="{{route('post.edit',$post)}}">
-                            <x-primary-button>
-                                編集
-                            </x-primary-button>
+                        <x-primary-button>
+                            編集
+                        </x-primary-button>
                         </a>
+                        @endcan
+                        @can('delete', $post) {{--ユーザーが一致すれば表示--}}
                         <form method="post" action="{{route('post.destroy',$post)}}" class="flex-2">
                             @csrf
                             @method('delete')
@@ -26,6 +29,7 @@
                                 削除
                             </x-primary-button>
                         </form>
+                        @endcan
                     </div>
                 </div>
                 <hr class="w-full">

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests; // authorize()を使うためのuse宣言
 
 class PostController extends Controller
 {
+    use AuthorizesRequests; // authorize()を使うためのuse宣言
     /**
      * Display a listing of the resource.
      */
@@ -63,6 +65,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $this->authorize('update', $post); // ← ここで認可チェック
         return view('post.edit',compact('post'));
     }
 
@@ -85,6 +88,7 @@ class PostController extends Controller
      */
     public function destroy(Request $request,Post $post)
     {
+        $this->authorize('delete', $post); // ← ここで認可チェック
         $post->delete();
         $request->session()->flash('message','削除しました');
         return redirect('post');
