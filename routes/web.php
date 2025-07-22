@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
+// 2FA
+use App\Http\Controllers\TwoFactorController;
+
 // 
 Route::resource('post',PostController::class)->middleware('auth');
 
@@ -25,6 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // 2FA
+    Route::get('/verify-pin', [TwoFactorController::class, 'show'])->name('verify.pin');
+    Route::post('/verify-pin', [TwoFactorController::class, 'verify'])->name('verify.pin.store');
 
     // 【動作フロー】以下のrouteについて
     // ブラウザからwebサーバーを介して、/postがリクエストされたときに
@@ -103,5 +110,7 @@ Route::middleware('auth')->group(function () {
 
 // 
 // Route::delete('post/{post}',[PostController::class,'destroy'])->name('post.destroy');
+
+
 
 require __DIR__.'/auth.php';

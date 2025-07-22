@@ -28,7 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // return redirect()->intended(route('dashboard', absolute: false));
+
+        // 2FA
+        $user = Auth::user(); // ログイン後のユーザー取得
+        $user->generateTwoFactorCode(); // PIN生成＆メール送信
+
+        return redirect()->route('verify.pin'); // PIN入力画面へ誘導
     }
 
     /**

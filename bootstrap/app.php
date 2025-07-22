@@ -5,6 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+// 2FA
+use App\Http\Middleware\EnsureTwoFactorCodeIsVerified;
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -27,6 +30,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin'=>RoleMiddleware::class
         ]);
+
+        // 2FA
+        $middleware->appendToGroup('web', EnsureTwoFactorCodeIsVerified::class);
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {
