@@ -31,10 +31,13 @@ class AuthenticatedSessionController extends Controller
         // return redirect()->intended(route('dashboard', absolute: false));
 
         // 2FA
-        $user = Auth::user(); // ログイン後のユーザー取得
-        $user->generateTwoFactorCode(); // PIN生成＆メール送信
+        // メールアドレス・パスワード認証後のユーザー取得
+        $user = Auth::user();
+        // それに対しUSERモデルを取得し2要素認証のPINコードを生成してメール送信するgenerateTwoFactorCodeメソッドを呼び出します。
+        $user->generateTwoFactorCode(); 
 
-        return redirect()->route('verify.pin'); // PIN入力画面へ誘導
+        // その後、pinコードの入力を促すverify-pinルートへリダイレクトします。
+        return redirect()->route('verify.pin');
     }
 
     /**
