@@ -45,7 +45,8 @@ class TwoFactorController extends Controller
         // これにより、ユーザーが2FA認証を完了したことが記録されます。
         session(['two_factor_authenticated' => true]);
 
-        // 2FA認証が成功した後、ユーザーをダッシュボードにリダイレクトします。
+        // 2FA認証が成功した後、intendedメソッドでユーザーが元々アクセスしようとしていたページにリダイレクトします。
+        // もし元々のページがない場合は、'/dashboard'にリダイレクトします。
         return redirect()->intended('/dashboard');
     }
 }
