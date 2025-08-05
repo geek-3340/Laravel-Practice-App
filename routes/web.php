@@ -15,7 +15,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // 
-Route::resource('post',PostController::class)->middleware(['auth','web']);
+Route::resource('post',PostController::class)->middleware('auth');
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,12 +26,12 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard', [PostController::class,'index'])->middleware(['auth','web'])->name('dashboard');
+Route::get('/dashboard', [PostController::class,'index'])->middleware('auth')->name('dashboard');
 
 // 認証済みのユーザーのみがアクセスできるルートを定義します。
 // 'auth'ミドルウェアは、ユーザーがログインしているかどうかを確認し、
 // ログインしていない場合はログインページにリダイレクトします
-Route::middleware(['auth','web'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

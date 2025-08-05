@@ -24,8 +24,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // 入力されたメールアドレスとパスワードを使用してユーザーを認証します。
         $request->authenticate();
 
+        // 認証が成功した場合、セッションを開始します。
+        // これにより、ユーザーのログイン状態が維持されます。
+        // ログインする度にセッションを再生成することにより、セッションハイジャック攻撃を防ぎます。
         $request->session()->regenerate();
 
         // return redirect()->intended(route('dashboard', absolute: false));

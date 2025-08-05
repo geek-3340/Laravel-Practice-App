@@ -32,6 +32,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // 2FA
+        // EnsureTwoFactorCodeIsVerifiedミドルウェアをwebグループに追加
+        // これにより、webグループのルートで2FAコードの検証が行われます。
+        // またroute/web.phpのルートでは、このwebミドルウェアが自動で適用されます。
         $middleware->appendToGroup('web', EnsureTwoFactorCodeIsVerified::class);
     })
 

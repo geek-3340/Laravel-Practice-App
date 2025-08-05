@@ -1,7 +1,7 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('verify.pin.store') }}">
         @csrf
-
+        
         <div class="text-center mt-4">
             <x-input-label for="two_factor_code" value="認証コード" />
             <x-text-input id="two_factor_code" type="text" name="two_factor_code" required autofocus />

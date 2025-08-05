@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 // 2FA
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TwoFactorCodeMail;
 
