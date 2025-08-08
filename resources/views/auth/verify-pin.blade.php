@@ -16,4 +16,13 @@
             <x-primary-button>認証する</x-primary-button>
         </div>
     </form>
+    <div class="text-center mt-4">
+        <p class="text-center mt-4">
+            もしメールが届かない場合は、
+            <a href="{{ route('verify.pin.resend')}}" class="text-blue-600 hover:text-blue-800">
+                こちら
+            </a>
+            から再送信してください。
+        </p>
+    </div>
 </x-guest-layout>

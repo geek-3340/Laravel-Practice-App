@@ -28,14 +28,15 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // RoleMiddlewareを有効にして呼び出し時のエイリアス（admin）を設定する
         $middleware->alias([
-            'admin'=>RoleMiddleware::class
+            'admin'=>RoleMiddleware::class,
+            'two_factor' => EnsureTwoFactorCodeIsVerified::class,
         ]);
 
         // 2FA
         // EnsureTwoFactorCodeIsVerifiedミドルウェアをwebグループに追加
         // これにより、webグループのルートで2FAコードの検証が行われます。
         // またroute/web.phpのルートでは、このwebミドルウェアが自動で適用されます。
-        $middleware->appendToGroup('web', EnsureTwoFactorCodeIsVerified::class);
+        // $middleware->appendToGroup('web', EnsureTwoFactorCodeIsVerified::class);
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {

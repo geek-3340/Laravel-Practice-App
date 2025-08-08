@@ -7,31 +7,32 @@ use App\Http\Controllers\PostController;
 // 2FA
 use App\Http\Controllers\TwoFactorController;
 
-// 2FA
-// メールアドレス・パスワード認証後、2FA認証前のユーザーがアクセスできるルート
-Route::middleware(['auth'])->group(function () {
-    Route::get('/verify-pin', [TwoFactorController::class, 'show'])->name('verify.pin');
-    Route::post('/verify-pin', [TwoFactorController::class, 'verify'])->name('verify.pin.store');
-});
-
-// 
-Route::resource('post',PostController::class)->middleware('auth');
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-// ログイン後、index.blade.phpに遷移したい為、コメントアウト
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/dashboard', [PostController::class,'index'])->middleware('auth')->name('dashboard');
+// 2FA
+// メールアドレス・パスワード認証後、2FA認証前のユーザーがアクセスできるルート
+Route::middleware('auth')->group(function () {
+    Route::get('/verify-pin', [TwoFactorController::class, 'show'])->name('verify.pin');
+    Route::post('/verify-pin', [TwoFactorController::class, 'verify'])->name('verify.pin.store');
+    Route::get('/verify-pin/resend', [TwoFactorController::class, 'resend'])->name('verify.pin.resend');
+});
 
 // 認証済みのユーザーのみがアクセスできるルートを定義します。
 // 'auth'ミドルウェアは、ユーザーがログインしているかどうかを確認し、
 // ログインしていない場合はログインページにリダイレクトします
-Route::middleware('auth')->group(function () {
+Route::middleware('auth','two_factor')->group(function () {
+
+    // ログイン後、index.blade.phpに遷移したい為、コメントアウト
+    // Route::get('/dashboard', function () {
+    //     return view('dashboard');
+    // })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', [PostController::class,'index'])->name('dashboard');
+
+    // 
+    Route::resource('post',PostController::class);
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -113,7 +114,5 @@ Route::middleware('auth')->group(function () {
 
 // 
 // Route::delete('post/{post}',[PostController::class,'destroy'])->name('post.destroy');
-
-
 
 require __DIR__.'/auth.php';

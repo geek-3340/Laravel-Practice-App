@@ -49,4 +49,16 @@ class TwoFactorController extends Controller
         // もし元々のページがない場合は、'/dashboard'にリダイレクトします。
         return redirect()->intended('/dashboard');
     }
+
+    public function resend()
+    {
+        // メールアドレス・パスワード認証後のユーザー取得
+        $user = Auth::user();
+
+        // それに対しUSERモデルを取得し2要素認証のPINコードを生成してメール送信するgenerateTwoFactorCodeメソッドを呼び出します。
+        $user->generateTwoFactorCode(); 
+
+        // その後、pinコードの入力を促すverify-pinルートへリダイレクトします。
+        return redirect()->route('verify.pin');
+    }
 }

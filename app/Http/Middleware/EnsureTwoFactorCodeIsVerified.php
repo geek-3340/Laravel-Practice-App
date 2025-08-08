@@ -13,13 +13,8 @@ class EnsureTwoFactorCodeIsVerified
     {
         // ユーザーが認証されているか確認します。
         if (Auth::check()) {
-            // 認証されている場合、ユーザーの情報を取得します。
-            $user = Auth::user();
-
             // 2FAコード認証が必要な場合の処理、認証済みであれば次のリクエストへ進みます。
-            if (!$request->session()->get('two_factor_authenticated') && // PINコードが認証されていない（trueでない）場合
-                !$request->is('verify-pin') // 現在のリクエストがPINコードの検証ページでない場合
-                ) {
+            if (!$request->session()->get('two_factor_authenticated')){  // PINコードが認証されていない（trueでない）場合
                 // 2FAコードの検証ページへリダイレクトします。
                 return redirect()->route('verify.pin');
             }
